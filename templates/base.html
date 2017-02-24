@@ -1,0 +1,60 @@
+{% load static %}
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	
+	
+<link rel="stylesheet" type="text/css" href="{% static 'css/estilos.css'%}" />
+	<meta charset="UTF-8">
+	<title>Linea de Tiempo</title>
+</head>
+<body>
+<div id="menu-container">
+		<<div id="logo-menu"></div>
+		<ul id="menu">
+			{% for publicacion1 in object_list %}
+			<li><a href="#" >{{publicacion1.titulo}}</a></li>
+			{% endfor %}
+		</ul>
+	</div><!-- menu-container -->
+	
+	{% with total=object_list|length|mul:500 %}
+	
+	<div id="main-container" style="width: {{ 500 | add:total }}px;">
+	{% for publicacion in object_list%}
+		<A id="{{publicacion.titulo}}"></A>
+		<div class="seccion" >
+	
+		<h1>{{publicacion.titulo}}</h1> <br>
+		<h2>{{publicacion.fecha}}</h2>
+		<img src="/media/{{publicacion.image}}" width="300px">
+		<p>{{publicacion.contenido}}</p>
+		<hr>
+		<a href="/media/{{publicacion.archivo}}">{{publicacion.archivo}}</a>
+
+		</div><!-- seccion -->
+
+	{% endfor %}
+
+		{% endwith %}
+	</div><!-- main container -->
+	}
+
+	<script type="text/javascript" src="{% static 'js/jquery.min.js'%}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.scroll.js'%}"></script>
+	<script type="text/javascript">
+	$("#menu a").on("click", function(){
+		$(".seccion").eq($(this).parent().index()).scrollTo({padding: $("#menu-container").width()});
+	});
+
+	function adaptScreen(){
+		$(".seccion").css("height", $(window).height()- 20);
+	}
+	adaptScreen();
+	$(window).resize(function(){
+		adaptScreen();
+	});
+	</script>
+</body>
+</html>
